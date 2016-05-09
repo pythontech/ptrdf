@@ -18,7 +18,7 @@ class Model:
         return obj
 
     def iter_sp2o(self, subj,pred):
-        tsubj = self._insub(subj)
+        tsubj = self._in(subj)
         tpred = self._inpred(pred)
         for tobj in self.triples.iter_sp2o(tsubj,tpred):
             yield self._out(tobj)
@@ -32,12 +32,39 @@ class Model:
         except StopIteration:
             return None
 
+    def iter_po2s(self, pred,obj):
+        tpred = self._inpred(pred)
+        tobj = self._in(obj)
+        for tsubj in self.triples.iter_po2s(tpred,tobj):
+            yield self._out(tsubj)
+
+    def all_po2s(self, pred,obj):
+        return list(self.iter_po2s(pred,obj))
+
+    def po2s(self, pred,obj):
+        try:
+            return self.iter_po2s(pred,obj).next()
+        except StopIteration:
+            return None
+
+    def test(self, subj,pred,obj):
+        tsubj = self._in(subj)
+        tpred = self._inpred(pred)
+        tobj = self._in(obj)
+	return self.triples.test(tsubj,tpred,tobj)
+	
     def _in(self,val):
         if type(val) is type(''):
             return '='+val
         else:
             uri = val.uri
             return uri
+
+    def _inpred(self, val):
+	if type(val) is type(''):
+	    return val
+	else:
+	    return val.uri
 
     def _out(self,tval):
         '''Convert string from triplestore to object or literal.
@@ -52,17 +79,34 @@ class Obj:
         self.uri = uri
         self.model = model
 
+    def __repr__(self):
+	return "<Obj '%s'>" % self.uri
+
     def test(self, pred,obj):
-        return self.model.test(self,pred,obj)
+        return self.model.test(self, pred, obj)
 
     def has_type(self, type):
         model = self.model
-        return model.test(self,model.dbrdftype, URI(type))
+        return self.test(model.dbrdftype, model.as_obj(type))
 
     def attr(self, pred):
         return self.model.sp2o(self,pred)
 
+    def iter_attr(self, pred):
+	for obj in self.model.iter_sp2o(self, pred):
+	    yield obj
+
+    def all_attr(self, pred):
+	return self.model.all_sp2o(self, pred)
+
     def rattr(self, pred):
         return self.model.po2s(pred,self)
+
+    def iter_rattr(self, pred):
+	for subj in self.model.iter_po2s(pred,self):
+	    yield subj
+
+    def all_rattr(self, pred):
+	return self.model.all_po2s(pred,self)
 
 # End
