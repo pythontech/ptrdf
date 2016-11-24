@@ -1,14 +1,13 @@
 #=======================================================================
-#       $Id: dict.py,v 1.1 2007/09/25 13:22:43 pythontech Exp pythontech $
-#	Triple store using string dict
+#       Triple store using string dict
 #=======================================================================
 # Support python2.2 which is latest on mythic-beasts which has bsddb
 from __future__ import generators
 
-import triples
+from . import Triples
 import re
 
-class DictTriples(triples.Triples):
+class DictTriples(Triples):
     def __init__(self):
         self.db = {}
         self.features = 'pP'

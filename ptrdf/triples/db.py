@@ -1,14 +1,13 @@
 #=======================================================================
-#       $Id: db.py,v 1.1 2009/06/25 15:17:19 chah Exp $
-#	Triplestore using Berkeley DB file
+#       Triplestore using Berkeley DB file
 #=======================================================================
 # Support python2.2 which is latest on mythic-beasts which has bsddb
 from __future__ import generators
 
-import triples.dict
+from .dict import DictTriples
 import bsddb
 
-class DBTriples(triples.dict.DictTriples):
+class DBTriples(DictTriples):
     def __init__(self, filename, access='r'):
         self.filename = filename
         self.access = access

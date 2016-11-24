@@ -1,12 +1,12 @@
 #=======================================================================
-#       $Id: model.py,v 1.1 2009/06/25 15:16:00 chah Exp $
-#	RDF-model
+#       RDF-model
 #=======================================================================
-class Model:
+class Model(object):
+    """RDF model containing a number of statements."""
     def __init__(self, triples):
         self.triples = triples
         self.dbrdftype = 'rdf:type'
-        self.objmap = {}
+        self.objmap = {}                # uri -> Obj
 
     def as_obj(self,uri):
         # See if already known
@@ -51,8 +51,8 @@ class Model:
         tsubj = self._in(subj)
         tpred = self._inpred(pred)
         tobj = self._in(obj)
-	return self.triples.test(tsubj,tpred,tobj)
-	
+        return self.triples.test(tsubj,tpred,tobj)
+        
     def _in(self,val):
         if type(val) is type(''):
             return '='+val
@@ -61,10 +61,10 @@ class Model:
             return uri
 
     def _inpred(self, val):
-	if type(val) is type(''):
-	    return val
-	else:
-	    return val.uri
+        if type(val) is type(''):
+            return val
+        else:
+            return val.uri
 
     def _out(self,tval):
         '''Convert string from triplestore to object or literal.
@@ -74,13 +74,14 @@ class Model:
         else:
             return self.as_obj(tval)
 
-class Obj:
+class Obj(object):
+    """URI reference"""
     def __init__(self, uri,model):
         self.uri = uri
         self.model = model
 
     def __repr__(self):
-	return "<Obj '%s'>" % self.uri
+        return "<Obj '%s'>" % self.uri
 
     def test(self, pred,obj):
         return self.model.test(self, pred, obj)
@@ -93,20 +94,20 @@ class Obj:
         return self.model.sp2o(self,pred)
 
     def iter_attr(self, pred):
-	for obj in self.model.iter_sp2o(self, pred):
-	    yield obj
+        for obj in self.model.iter_sp2o(self, pred):
+            yield obj
 
     def all_attr(self, pred):
-	return self.model.all_sp2o(self, pred)
+        return self.model.all_sp2o(self, pred)
 
     def rattr(self, pred):
         return self.model.po2s(pred,self)
 
     def iter_rattr(self, pred):
-	for subj in self.model.iter_po2s(pred,self):
-	    yield subj
+        for subj in self.model.iter_po2s(pred,self):
+            yield subj
 
     def all_rattr(self, pred):
-	return self.model.all_po2s(pred,self)
+        return self.model.all_po2s(pred,self)
 
 # End

@@ -1,15 +1,14 @@
 #=======================================================================
-#       $Id: memory.py,v 1.1 2009/06/25 15:17:29 chah Exp $
-#	Memory-only triplestore
+#       Memory-only triplestore
 #=======================================================================
 # Support python2.2 which is latest on mythic-beasts which has bsddb
 from __future__ import generators
 
-import triples
+from . import Triples
 
-class MemoryTriples(triples.Triples):
+class MemoryTriples(Triples):
     def __init__(self):
-        self.d = {}
+        self.d = {}                     # s|o -> [{p->{o->1}},{p->{s->1}}}]
 
     def add(self, subj,pred,obj):
         if subj in self.d:
@@ -136,6 +135,6 @@ class MemoryTriples(triples.Triples):
         pass;                   # All updates instantaneous
 
     def rollback(self):
-        raise Error, "No rollback possible"
+        raise Exception("No rollback possible")
 
 # End
