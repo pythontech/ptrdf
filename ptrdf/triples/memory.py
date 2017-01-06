@@ -3,6 +3,7 @@
 #=======================================================================
 # Support python2.2 which is latest on mythic-beasts which has bsddb
 from __future__ import generators
+from collections import OrderedDict
 
 from . import Triples
 
@@ -18,7 +19,7 @@ class MemoryTriples(Triples):
         if pred in sx[0]:
             px = sx[0][pred]
         else:
-            px = sx[0][pred] = {}
+            px = sx[0][pred] = OrderedDict()
         if obj in px:
             pass;               # Already have triple
         else:
@@ -31,7 +32,7 @@ class MemoryTriples(Triples):
             if pred in ox[1]:
                 px = ox[1][pred]
             else:
-                px = ox[1][pred] = {}
+                px = ox[1][pred] = OrderedDict()
             if subj in px:
                 pass;           # Should not happen
             else:
