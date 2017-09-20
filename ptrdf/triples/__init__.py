@@ -105,7 +105,7 @@ class Triples:
         '''
         return list(self.iter_s2p(subj))
 
-    def s2p(self, obj):
+    def o2p(self, obj):
         '''Return one predicate (if any) for given object.
         '''
         return _first(self.iter_o2p(obj))
