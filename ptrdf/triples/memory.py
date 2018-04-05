@@ -63,12 +63,12 @@ class MemoryTriples(Triples):
                         yield (subj,pred,o)
             elif obj is not None:
                 # Match: s?o
-                for (p,px) in sx[0].iteritems():
+                for (p,px) in sx[0].items():
                     if obj in px:
                         yield (subj,p,obj)
             else:
                 # Match: s??
-                for (p,px) in sx[0].iteritems():
+                for (p,px) in sx[0].items():
                     for o in px.keys():
                         yield (subj,p,o)
         elif obj is not None:
@@ -82,20 +82,20 @@ class MemoryTriples(Triples):
                     yield (s,pred,obj)
             else:
                 # Match: ??o
-                for (p,px) in ox[1].iteritems():
+                for (p,px) in ox[1].items():
                     for s in px.keys():
                         yield (s,p,obj)
         elif pred is not None:
             # Match: ?p?
-            for (s,sx) in self.d.iteritems():
+            for (s,sx) in self.d.items():
                 if pred in sx[0]:
                     px = sx[0][pred]
                     for o in px.keys():
                         yield (s,pred,o)
         else:
             # Match: ???
-            for (s,sx) in self.d.iteritems():
-                for (p,px) in sx[0].iteritems():
+            for (s,sx) in self.d.items():
+                for (p,px) in sx[0].items():
                     for o in px.keys():
                         yield (s,p,o)
         return
@@ -119,7 +119,7 @@ class MemoryTriples(Triples):
     def iter_s2p(self, subj):
         if subj in self.d:
             sx = self.d[subj]
-            for (p,px) in sx[0].iteritems():
+            for (p,px) in sx[0].items():
                 if px:
                     yield p
 

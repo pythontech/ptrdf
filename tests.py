@@ -30,7 +30,7 @@ class TestMemoryTriples(unittest.TestCase):
         self.assertEqual(qt(t.all_query(None,None,None)), 'a,b,c;a,b,d;a,e,c', 'query ???');
         self.assertEqual(j(t.all_sp2o('a','b')), 'c,d', 'sp2o');
         self.assertEqual(j(t.all_sp2o('a','y')), '', 'sp2o no match');
-        self.assert_(t.sp2o('a','b') in ['c','d'], 'sp2o scalar');
+        self.assertTrue(t.sp2o('a','b') in ['c','d'], 'sp2o scalar');
         self.assertEqual(j(t.all_po2s('b','d')), 'a', 'po2s');
         self.assertEqual(t.po2s('b','d'), 'a', 'po2s scalar');
         self.assertEqual(j(t.all_po2s('b','z')), '', 'po2s no match');
@@ -61,7 +61,7 @@ class TestDbAdd(unittest.TestCase):
         t.commit()
         t.disconnect()
 
-        expected = ''.join(map(lambda x: x+'\n',
+        expected = ''.join([x+'\n'  for x in
                                sorted(('v1 = foo', 'ifoo = 1',
                                        'v2 = bar', 'ibar = 2',
                                        'v3 = baz', 'ibaz = 3',
@@ -71,7 +71,7 @@ class TestDbAdd(unittest.TestCase):
                                        't1,2,4 = 1',
                                        'o1,2 = 3+4',
                                        's2,3 = 1',
-                                       's2,4 = 1'))))
+                                       's2,4 = 1'))])
         self.assertEqual(dbread(dbname), expected, 'db data for 2 triples')
 
 # From 03_dbquery.t
@@ -131,8 +131,7 @@ def qt(qres):
     with results sorted
     e.g. [('a','d'),('a','b')] -> 'a,b;a,d'
     '''
-    return ';'.join(sorted(map(lambda x: ','.join(x),
-                               qres)))
+    return ';'.join(sorted([','.join(x)  for x in qres]))
 
 def j(seq):
     if seq is None: return ''

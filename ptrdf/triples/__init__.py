@@ -3,6 +3,11 @@
 #=======================================================================
 # Support python2.2 which is latest on mythic-beasts which has bsddb
 from __future__ import generators
+try:
+    next
+except NameError:                       # PY < 2.6
+    def next(it):
+        return it.next()
 
 class Triples:
     '''Virtual triplestore class.
@@ -125,7 +130,7 @@ def _first(it):
     '''Return first (if any) item from iterator.
     '''
     try:
-        res = it.next()
+        res = next(it)
     except StopIteration:
         res = None
     return res

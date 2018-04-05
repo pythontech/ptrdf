@@ -3,7 +3,11 @@
 #=======================================================================
 # Support python2.2 which is latest on mythic-beasts which has bsddb
 from __future__ import generators
-
+try:
+    next
+except NameError:                       # PY < 2.6
+    def next(it):
+        return it.next()
 from .dict import DictTriples
 import bsddb
 
@@ -15,7 +19,7 @@ class DBTriples(DictTriples):
         self.features = self._get('f') or ''
 
     def _get(self, key):
-        if not self.db.has_key(key):
+        if key not in self.db:
             return None
         return self.db[key]
 
@@ -24,7 +28,7 @@ class DBTriples(DictTriples):
             x = self.db.first()
             yield x
             while True:
-                x = self.db.next()
+                x = next(self.db)
                 yield x
         except KeyError:
             raise StopIteration

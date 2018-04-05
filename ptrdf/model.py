@@ -9,6 +9,7 @@ class Model(object):
         self.objmap = {}                # uri -> Obj
 
     def as_obj(self,uri):
+        """Get Obj for given URI"""
         # See if already known
         obj = self.objmap.get(uri)
         if obj: return obj
@@ -28,7 +29,8 @@ class Model(object):
 
     def sp2o(self, subj,pred):
         try:
-            return self.iter_sp2o(subj,pred).next()
+            it = self.iter_sp2o(subj,pred)
+            return next(it)
         except StopIteration:
             return None
 
@@ -43,7 +45,8 @@ class Model(object):
 
     def po2s(self, pred,obj):
         try:
-            return self.iter_po2s(pred,obj).next()
+            it = self.iter_po2s(pred,obj)
+            return next(it)
         except StopIteration:
             return None
 
