@@ -72,7 +72,7 @@ class Model(object):
     def _out(self,tval):
         '''Convert string from triplestore to object or literal.
         '''
-        if tval[0] is '=':
+        if tval[0] == '=':
             return tval[1:]
         else:
             return self.as_obj(tval)

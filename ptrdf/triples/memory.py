@@ -1,8 +1,6 @@
 #=======================================================================
 #       Memory-only triplestore
 #=======================================================================
-# Support python2.2 which is latest on mythic-beasts which has bsddb
-from __future__ import generators
 from collections import OrderedDict
 
 from . import Triples

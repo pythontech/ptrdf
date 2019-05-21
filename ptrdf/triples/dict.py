@@ -1,9 +1,6 @@
 #=======================================================================
 #       Triple store using string dict
 #=======================================================================
-# Support python2.2 which is latest on mythic-beasts which has bsddb
-from __future__ import generators
-_use_iteritems = hasattr({},'iteritems')    # PY2
 from . import Triples
 import re
 
@@ -196,13 +193,8 @@ class DictTriples(Triples):
         vals = self._get(key)
         return (vals is not None)
 
-    if _use_iteritems:                  # PY2
-        def _iteritems(self):
-            for kv in self.db.iteritems():
-                yield kv
-    else:
-        def _iteritems(self):
-            for kv in self.db.items():
-                yield kv
+    def _iteritems(self):
+        for kv in self.db.iteritems():
+            yield kv
 
 # End

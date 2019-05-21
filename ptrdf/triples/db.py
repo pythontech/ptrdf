@@ -1,13 +1,6 @@
 #=======================================================================
 #       Triplestore using Berkeley DB file
 #=======================================================================
-# Support python2.2 which is latest on mythic-beasts which has bsddb
-from __future__ import generators
-try:
-    next
-except NameError:                       # PY < 2.6
-    def next(it):
-        return it.next()
 from .dict import DictTriples
 import bsddb
 
